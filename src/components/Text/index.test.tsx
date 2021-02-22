@@ -20,9 +20,15 @@ import Text from '.';
 
 describe('Text', () => {
     it('should render text', () => {
-        const { getByText } = render(<Text>sometext</Text>);
+        const { getByText, container } = render(<Text>sometext</Text>);
 
         expect(getByText('sometext')).toBeInTheDocument();
+        expect(container.querySelector('span')).toBeInTheDocument();
+    });
+
+    it('should render text as p', () => {
+        const { container } = render(<Text variant="p">sometext</Text>);
+        expect(container.querySelector('p')).toBeInTheDocument();
     });
 
     it('should render children component', () => {

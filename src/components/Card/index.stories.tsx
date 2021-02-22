@@ -40,12 +40,59 @@ export const FixContent = () => (
     </Box>
 );
 
+export const WithHover = () => (
+    <Box width="350px">
+        <Card title="Card title" subtitle="sub title" withHover>
+            Text content
+        </Card>
+    </Box>
+);
+
+export const MouseEvents = () => (
+    <Box width="350px">
+        <Card
+            title="Card title"
+            subtitle="sub title"
+            onMouseEnter={(event) => {
+                event.stopPropagation();
+                console.log('OnMouseEnter');
+            }}
+            onMouseOut={(event) => {
+                event.stopPropagation();
+                console.log('OnMouseOut');
+            }}
+        >
+            <Placeholder />
+        </Card>
+    </Box>
+);
+
 export const ExpandableContent = () => (
     <Box width="350px">
         <Card title="Card title" subtitle="sub title">
             <ExpandableSection variant="borderless" header="expandableContent">
                 expandableContent
             </ExpandableSection>
+        </Card>
+    </Box>
+);
+
+export const WithOnClick = () => (
+    <Box width="350px">
+        <Card title="Card title" subtitle="sub title" onClick={() => alert('A card was clicked')}>
+            Show an alert when clicked
+        </Card>
+    </Box>
+);
+
+export const WithTitleTypographyProps = () => (
+    <Box width="350px">
+        <Card
+            title="Card title"
+            subtitle="sub title"
+            titleTypographyProps={{ variant: 'h2', color: 'secondary', align: 'right', gutterBottom: true }}
+        >
+            Show an alert when clicked
         </Card>
     </Box>
 );

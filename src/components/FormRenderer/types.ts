@@ -27,4 +27,5 @@ export const componentTypes = {
     EXPANDABLE_SECTION: 'EXPANDABLE_SECTION',
     TABLE: 'TABLE',
     REVIEW: 'REVIEW',
+    CUSTOM: 'CUSTOM',
 };

@@ -62,7 +62,7 @@ import { RadioButton } from '../RadioGroup';
 import debounce from 'lodash.debounce';
 import isEqual from 'lodash.isequal';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     tableBar: {
         display: 'flex',
         alignItems: 'center',
@@ -342,7 +342,7 @@ export default function Table<D extends object>({
 
     const selectedRowIdMap = useMemo(() => {
         const map: any = {};
-        selectedRowIds.forEach(id => {
+        selectedRowIds.forEach((id) => {
             map[id] = true;
         });
         return map;
@@ -362,6 +362,7 @@ export default function Table<D extends object>({
                 pageSize: defaultPageSize,
                 selectedRowIds: selectedRowIdMap,
                 sortBy: defaultSortBy,
+                groupBy: defaultGroups,
             },
             getRowId,
             disableSortBy,
@@ -474,9 +475,9 @@ export default function Table<D extends object>({
         }
     }, [selectedFlatRows]);
 
-    const flattenGroupBy = () => Object.keys(groupBy).filter(key => groupBy[key]);
+    const flattenGroupBy = () => Object.keys(groupBy).filter((key) => groupBy[key]);
 
-    const flattenShowColumns = () => Object.keys(showColumns).filter(key => showColumns[key]);
+    const flattenShowColumns = () => Object.keys(showColumns).filter((key) => showColumns[key]);
 
     useEffect(() => {
         if (onFetchData) {
@@ -509,7 +510,7 @@ export default function Table<D extends object>({
         pageIndex: pageIndex || 0,
         pageSize: pageSize || 10,
         pageSizes: pageSizes || [10, 25, 50],
-        page: page || [],
+        pageLength: (page || []).length,
         rowCount,
         loading,
         disablePagination,
@@ -561,7 +562,7 @@ export default function Table<D extends object>({
         loading,
         styles,
         colSpan: columns.length,
-        page,
+        pageLength: page?.length,
     };
 
     return (

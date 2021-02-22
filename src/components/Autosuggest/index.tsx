@@ -25,6 +25,7 @@ import LoadingIndicator from '../LoadingIndicator';
 import StatusIndicator from '../StatusIndicator';
 import { AriaBaseProps } from '../../props/common';
 import { SelectBaseProps, SelectOption } from '../Select';
+import Icon, { IconName } from '../Icon';
 
 export interface AutosuggestProps extends SelectBaseProps, AriaBaseProps {
     /**
@@ -51,6 +52,18 @@ export interface AutosuggestProps extends SelectBaseProps, AriaBaseProps {
      * automatically correct user input, such as autocorrect and autocapitalize.
      * */
     disableBrowserAutocorrect?: boolean;
+    /**
+     * If `true`, the Autocomplete is free solo, meaning that the user input is not bound to provided options.
+     */
+    freeSolo?: boolean;
+    /**
+     * If `true`, the input can't be cleared.
+     */
+    disableClearable?: boolean;
+    /**
+     * Define the Icon to be used for the text input
+     */
+    icon?: false | IconName;
     /**
      * Callback fired when the value changes.
      * */
@@ -99,6 +112,9 @@ export default function Autosuggest({
     placeholder,
     invalid,
     ariaRequired = false,
+    freeSolo = false,
+    disableClearable = false,
+    icon = undefined,
     ariaDescribedby,
     ariaLabelledby,
     onChange = () => {},
@@ -122,9 +138,9 @@ export default function Autosuggest({
 
     const flattenOptions = useMemo((): SelectOption[] => {
         const optionArray: SelectOption[] = [];
-        options.forEach(option => {
+        options.forEach((option) => {
             if (option.options) {
-                option.options.map(o => {
+                option.options.map((o) => {
                     optionArray.push({ label: o.label || o.value, value: o.value, group: option.label });
                 });
             } else {
@@ -184,7 +200,8 @@ export default function Autosuggest({
                 type: 'search',
                 startAdornment: (
                     <InputAdornment position="start">
-                        <SearchIcon color="action" />
+                        {icon === undefined && <SearchIcon color="action" />}
+                        {icon && <Icon name={icon} color="action" />}
                     </InputAdornment>
                 ),
             }}
@@ -194,28 +211,31 @@ export default function Autosuggest({
     return (
         <div>
             <MaterialUIAutocomplete
+                data-testid="autosuggest"
                 disabled={disabled}
                 autoHighlight
                 popupIcon={null}
+                freeSolo={freeSolo}
+                disableClearable={disableClearable}
                 open={statusType === 'error' || statusType === 'loading' ? true : open}
                 id={controlId}
                 value={inputValue}
                 noOptionsText={empty}
                 options={flattenOptions}
-                groupBy={option => option.group || ''}
+                groupBy={(option) => option.group || ''}
                 loadingText={loadingAndErrorText}
                 onChange={handleOnChange}
                 onInputChange={handleOnInput}
-                onOpen={e => {
+                onOpen={(e) => {
                     setOpen(true);
                     onFocus(e);
                 }}
-                onClose={e => {
+                onClose={(e) => {
                     setOpen(false);
                     onBlur(e);
                 }}
                 loading={statusType !== 'finished'}
-                getOptionLabel={option => option.label || ''}
+                getOptionLabel={(option) => option.label || ''}
                 renderInput={textfield}
                 classes={{ inputRoot: classes.muiAutocompleteOverride }}
             />

@@ -15,9 +15,11 @@
  ******************************************************************************************************************** */
 
 import React, {
+    createContext,
     ReactNode,
     ReactElement,
     FunctionComponent,
+    useContext,
     useState,
     useLayoutEffect,
     useRef,
@@ -41,6 +43,8 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import { SideNavigationProps } from '../../components/SideNavigation';
 import { HelpPanelProps } from '../../components/HelpPanel';
 
+import { LOCAL_STORAGE_KEY_SIDE_NAV_OPEN, LOCAL_STORAGE_KEY_HELP_PANEL_OPEN } from './constants';
+
 const useStyles = makeStyles((theme: Theme) => ({
     flashbarContainer: {
         margin: theme.spacing(-4, -4, 2, -4),
@@ -53,7 +57,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     main: {
         display: 'flex',
-        height: 'calc(100vh - 65px)',
+        height: ({ headerHeightInPx }: any) => `calc(100vh - ${headerHeightInPx}px)`,
     },
     content: ({ hasSideNavigration, isSideNavigationOpen, hasHelpPanel, isHelpPanelOpen }: any) => ({
         marginTop: 0,
@@ -82,6 +86,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     mainContent: ({ notificationsBoxHeight }: any) => ({
         marginTop: notificationsBoxHeight,
+        '&:focus': {
+            outline: 'none',
+        },
     }),
     menu: {
         [theme.breakpoints.down('xs')]: {
@@ -120,6 +127,16 @@ export interface Notification extends FlashbarMessage {
     id: string;
 }
 
+export interface AppLayoutContextApi {
+    openHelpPanel: (open?: boolean) => void;
+}
+
+const initialState: AppLayoutContextApi = {
+    openHelpPanel: () => {},
+};
+
+const AppLayoutContext = createContext<AppLayoutContextApi>(initialState);
+
 export interface AppLayoutProps {
     /**The header */
     header: ReactNode;
@@ -139,11 +156,16 @@ export interface AppLayoutProps {
     notifications?: Notification[];
     /**Maxinum number of notifications to be displayed*/
     maxNotifications?: number;
+    /**
+     * Height Of Header in pixel when custom header is used.
+     * By default, 65px will be used for the <a href='/#/Components/Header'>NorthStar Header</a>. */
+    headerHeightInPx?: number;
 }
 
 /**
- * Basic layout for application, with place holder for header, navigation area, content area, breadcrum and tools/help panel.
- * It should be placed as the top most component in Mezzanine content area. There should not be any spacing around it, it consumes 100% of the width and height of the Mezzanine content area, providing its own scrolling behavior.
+ * Basic layout for application, with place holder for header, navigation area, content area, breadcrumbs and tools/help panel.
+ * It should be placed as the top most component in main content area. There should not be any spacing around it, it consumes
+ * 100% of the width and height of the main content area, providing its own scrolling behavior.
  * By default it comes with a padding inside the content region. It can be removed by setting prop paddingContentArea == false.
  */
 const AppLayout: FunctionComponent<AppLayoutProps> = ({
@@ -156,9 +178,10 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
     maxNotifications = 2,
     inProgress = false,
     notifications,
+    headerHeightInPx = 65,
 }) => {
-    const [isSideNavigationOpen, setIsSideNavigationOpen] = useLocalStorage('AppLayout.sideNavigationOpen', 'false');
-    const [isHelpPanelOpen, setIsHelpPanelOpen] = useLocalStorage('AppLayout.helpPanelOpen', 'false');
+    const [isSideNavigationOpen, setIsSideNavigationOpen] = useLocalStorage(LOCAL_STORAGE_KEY_SIDE_NAV_OPEN, 'false');
+    const [isHelpPanelOpen, setIsHelpPanelOpen] = useLocalStorage(LOCAL_STORAGE_KEY_HELP_PANEL_OPEN, 'false');
     const notificationsBoxRef = useRef(null);
     const mainContentRef = useRef(null);
     const [notificationsBoxHeight, setNotificationsBoxHeight] = useState(0);
@@ -192,6 +215,7 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
         inProgress,
         notificationsBoxHeight,
         mainContentScrollPosition,
+        headerHeightInPx,
     });
 
     const renderNavigationIcon = useCallback(
@@ -200,6 +224,7 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
+                    data-testid="open-nav-drawer"
                     onClick={() => setIsSideNavigationOpen('true')}
                     classes={{
                         root: rootClassname,
@@ -219,6 +244,7 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
                 <IconButton
                     color="inherit"
                     aria-label="open drawer"
+                    data-testid="open-helppanel-drawer"
                     onClick={() => setIsHelpPanelOpen('true')}
                     classes={{
                         root: rootClassname,
@@ -232,8 +258,19 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
         [classes, setIsHelpPanelOpen]
     );
 
+    const openHelpPanel = useCallback(
+        (open: boolean = true) => {
+            setIsHelpPanelOpen(open.toString());
+        },
+        [setIsHelpPanelOpen]
+    );
+
     return (
-        <>
+        <AppLayoutContext.Provider
+            value={{
+                openHelpPanel,
+            }}
+        >
             {header}
             {(navigation || helpPanel) && (
                 <Box className={classes.menuBar}>
@@ -290,8 +327,10 @@ const AppLayout: FunctionComponent<AppLayoutProps> = ({
                     </Sidebar>
                 )}
             </Box>
-        </>
+        </AppLayoutContext.Provider>
     );
 };
+
+export const useAppLayoutContext = () => useContext(AppLayoutContext);
 
 export default AppLayout;

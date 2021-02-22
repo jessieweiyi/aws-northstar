@@ -25,7 +25,7 @@ import LoadingIndicator from '../LoadingIndicator';
 import Heading from '../Heading';
 import { Typography } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     header: {
         fontSize: '18px',
         padding: '20px 56px 20px 30px',
@@ -74,7 +74,7 @@ const HelpPanel: FunctionComponent<HelpPanelProps> = ({
                 <Heading variant="h2">{headerLabel}</Heading>
             </Box>
         );
-    }, [headerLabel]);
+    }, [headerLabel, styles]);
 
     const content = useMemo(() => {
         return (
@@ -95,7 +95,7 @@ const HelpPanel: FunctionComponent<HelpPanelProps> = ({
                 )}
             </Box>
         );
-    }, [children, learnMoreFooter]);
+    }, [children, learnMoreFooter, styles]);
 
     return (
         <Box>

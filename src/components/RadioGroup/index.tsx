@@ -19,12 +19,15 @@ import { makeStyles, RadioGroup as MaterialRadioButtonGroup } from '@material-ui
 import clsx from 'clsx';
 import RadioButton from './components/RadioButton';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
     root: {},
     div: {
         extend: 'root',
         textAlign: 'center',
         width: 'fit-content',
+    },
+    radio: {
+        transform: 'scale(1)',
     },
 }));
 
@@ -50,7 +53,7 @@ const RadioGroup: FunctionComponent<RadioGroupProps> = ({ name, value, items = [
     const classes = useStyles();
     return (
         <div className={clsx(classes.root, classes.div)}>
-            <MaterialRadioButtonGroup value={value} name={name} onChange={onChange}>
+            <MaterialRadioButtonGroup className={clsx(classes.radio)} value={value} name={name} onChange={onChange}>
                 {items.map((item, index) => (
                     <Fragment key={index}>{item}</Fragment>
                 ))}

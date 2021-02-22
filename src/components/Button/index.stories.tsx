@@ -44,6 +44,20 @@ export const LinkButton = () => (
     </Button>
 );
 
+export const ButtonsWithDifferentSize = () => (
+    <Inline>
+        <Button size="small" onClick={action('clicked')}>
+            Small Button
+        </Button>
+        <Button size="medium" onClick={action('clicked')}>
+            Medium Button
+        </Button>
+        <Button size="large" onClick={action('clicked')}>
+            Large Button
+        </Button>
+    </Inline>
+);
+
 export const IconButton = () => (
     <Button variant={'icon'} label="settings" icon={'settings'} onClick={action('clicked')}></Button>
 );
@@ -62,6 +76,21 @@ export const IconButtonsWithText = () => (
         <Button icon={'folder'} iconAlign="right" onClick={action('clicked')}>
             Folder
         </Button>
+    </Inline>
+);
+
+export const IconButtonsMaterialUIIcons = () => (
+    <Inline>
+        <Button variant={'primary'} icon={'Cloud'} onClick={action('clicked')}>
+            Cloud
+        </Button>
+        <Button variant={'primary'} icon={'AccountCircleTwoTone'} onClick={action('clicked')}>
+            Account
+        </Button>
+        <Button icon={'Remove'} iconAlign="right" onClick={action('clicked')}>
+            Remove
+        </Button>
+        <Button variant={'icon'} label="Dns" icon={'Dns'} onClick={action('clicked')}></Button>
     </Inline>
 );
 

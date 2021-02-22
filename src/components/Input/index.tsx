@@ -88,8 +88,8 @@ const mapProps = ({
     disableBrowserAutocorrect = false,
     ...props
 }: InputProps): MaterialInputProps => {
-    const autoCorrectString: string = autocomplete ? 'on' : 'off';
-    const autoCompleteString: string = disableBrowserAutocorrect ? 'off' : 'on';
+    const autoCorrectString: string = disableBrowserAutocorrect ? 'off' : 'on';
+    const autoCompleteString: string = autocomplete ? 'on' : 'off';
     const inputProps = {
         'aria-labelledby': props.ariaLabelledby,
         'aria-describedby': props.ariaDescribedby,
@@ -158,7 +158,7 @@ const Input: FunctionComponent<InputProps> = ({ onChange = () => {}, ...props })
             }
             endAdornment={props.type == 'search' && showClearInputButton && clearSearchInput()}
             value={inputValue}
-            onChange={e => handleChange(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
         />
     );
 };

@@ -38,7 +38,7 @@ describe('Button', () => {
         describe('when loading', () => {
             it('disables button and renders loader icon instead of icon from prop', () => {
                 const props = { loading: true, variant: 'icon' as const, icon: 'add_plus' as ButtonIconType };
-                const { queryByRole, getByRole } = render(<Button {...props}>test</Button>);
+                const { queryByRole } = render(<Button {...props}>test</Button>);
                 expect(queryByRole('button')).toHaveAttribute('disabled');
                 expect(queryByRole('progressbar')).toBeInTheDocument();
             });
@@ -110,6 +110,24 @@ describe('Button', () => {
                 const { getByRole } = render(<Button onClick={onClickMockFn}>test</Button>);
                 getByRole('button').click();
                 expect(onClickMockFn).toBeCalled();
+            });
+        });
+        describe('different size', () => {
+            it('should render a small button', () => {
+                const { getByRole } = render(<Button size="small">test</Button>);
+                expect(getByRole('button')).toHaveClass('MuiButton-sizeSmall');
+            });
+
+            it('should render a medium button', () => {
+                const { getByRole } = render(<Button size="medium">test</Button>);
+                // medium size does not have a specific class, that's the standard case
+                expect(getByRole('button')).not.toHaveClass('MuiButton-sizeSmall');
+                expect(getByRole('button')).not.toHaveClass('MuiButton-sizeLarge');
+            });
+
+            it('should render a large button', () => {
+                const { getByRole } = render(<Button size="large">test</Button>);
+                expect(getByRole('button')).toHaveClass('MuiButton-sizeLarge');
             });
         });
     });

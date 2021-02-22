@@ -232,6 +232,17 @@ const schema = {
             ],
         },
         {
+            component: componentTypes.TIME_PICKER,
+            name: 'timePicker',
+            label: 'Time picker',
+            isRequired: true,
+            validate: [
+                {
+                    type: validatorTypes.REQUIRED,
+                },
+            ],
+        },
+        {
             component: componentTypes.TREE_VIEW,
             label: 'this is a tree',
             helperText: 'this is a hint',
@@ -298,6 +309,7 @@ const initialValues = {
     ],
     confirm: true,
     datePicker: new Date(2020, 1, 1),
+    timePicker: '2020-01-01T00:00:00Z',
     tree: ['3', '5'],
 };
 
@@ -520,6 +532,17 @@ const schema = {
             component: componentTypes.DATE_PICKER,
             name: 'datePicker',
             label: 'Date picker',
+            isRequired: true,
+            validate: [
+                {
+                    type: validatorTypes.REQUIRED,
+                },
+            ],
+        },
+        {
+            component: componentTypes.TIME_PICKER,
+            name: 'timePicker',
+            label: 'Time picker',
             isRequired: true,
             validate: [
                 {
@@ -1118,6 +1141,17 @@ const schema = {
                             ],
                         },
                         {
+                            component: componentTypes.TIME_PICKER,
+                            name: 'timePicker',
+                            label: 'Time picker',
+                            isRequired: true,
+                            validate: [
+                                {
+                                    type: validatorTypes.REQUIRED,
+                                },
+                            ],
+                        },
+                        {
                             component: componentTypes.CHECKBOX,
                             name: 'confirm',
                             label: 'I understand the terms and condition',
@@ -1219,6 +1253,7 @@ const initialValues = {
     name1: 'name',
     switch: true,
     datePicker: '2020-06-11T14:00:00.000Z',
+    timePicker: '2020-06-11T14:00:00.000Z',
     confirm: true,
     table: [
         { id: 'id0000012', name: 'Engagement 12', createdDate: '2019-11-12' },
@@ -1232,4 +1267,89 @@ const initialValues = {
     onSubmit={console.log('Submit')}
     onCancel={console.log('Cancel')}
 />
+```
+
+```jsx
+import FormRenderer, { componentTypes } from 'aws-northstar/components/FormRenderer';
+import Container from 'aws-northstar/layouts/Container';
+import Box from 'aws-northstar/layouts/Box';
+import Input from 'aws-northstar/components/Input';
+import Text from 'aws-northstar/components/Text';
+
+const CustomComponentSimple = ({ label }) => <Text>{label}</Text>;
+
+const CustomComponentComplex = ({ input }) => <Input 
+    onChange={input.onChange} 
+    value={input.value}/>
+
+const schema = {
+    fields: [
+        {
+            component: componentTypes.CUSTOM,
+            name: 'text',
+            label: 'This is the content of custom component',
+            CustomComponent: CustomComponentSimple,
+        },
+        {
+            component: componentTypes.CUSTOM,
+            name: 'input',
+            CustomComponent: CustomComponentComplex,
+        },
+    ],
+    header: 'Data driven form with Custom Component',
+    description:
+        'Custom Component is an extention of Review Component which allows users to include custom business logic',
+};
+
+<Container>
+    <FormRenderer 
+        schema={schema} 
+        initialValues={{
+            input: 'initial input'
+        }}
+        onSubmit={console.log} 
+        onCancel={console.log} />
+</Container>
+```
+
+```jsx
+import { useCallback } from 'react';
+import FormRenderer, { componentTypes } from 'aws-northstar/components/FormRenderer';
+import Container from 'aws-northstar/layouts/Container';
+import FileUpload from 'aws-northstar/components/FileUpload';
+
+const FileUploadComponent = ({ name, input, onChange }) => {
+   const handleOnChange = useCallback(files => {
+            if(files && files.length > 0) {
+                if(onChange) {
+                    onChange(files);
+                }
+    
+                input.onChange(files.map(f => f.name));
+            }
+       },
+       [input, onChange]
+   );
+   return <FileUpload controlId={name} onChange={handleOnChange} />
+}
+
+const schema = {
+    fields: [
+        {
+            component: componentTypes.CUSTOM,
+            name: 'file',
+            CustomComponent: FileUploadComponent,
+            onChange: console.log
+        },
+    ],
+    header: 'Data driven form using FileUpload',
+    description:
+        'File upload logic can be implemented outside FormRenderer',
+};
+
+<FormRenderer 
+    schema={schema} 
+    onSubmit={console.log} 
+    onCancel={console.log} />;
+
 ```

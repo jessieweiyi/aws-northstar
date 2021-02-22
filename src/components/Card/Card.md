@@ -39,3 +39,43 @@ import ExpandableSection from 'aws-northstar/components/ExpandableSection';
     </Card>
 </Box>
 ```
+
+```jsx
+import Card from 'aws-northstar/components/Card';
+import Container from 'aws-northstar/layouts/Container';
+import Box from 'aws-northstar/layouts/Box';
+
+<Box width='350px'>
+    <Card title="Card title" subtitle="sub title" withHover>
+        Text content
+    </Card>
+</Box>
+```
+
+```jsx
+import Card from 'aws-northstar/components/Card';
+import Container from 'aws-northstar/layouts/Container';
+import Box from 'aws-northstar/layouts/Box';
+
+<Box width="350px">
+    <Card title="Card title" subtitle="sub title" onClick={() => alert('A card was clicked')}>
+        Show an alert when clicked
+    </Card>
+</Box>
+```
+
+```jsx
+import Card from 'aws-northstar/components/Card';
+import Container from 'aws-northstar/layouts/Container';
+import Box from 'aws-northstar/layouts/Box';
+
+<Box width='350px'>
+    <Card
+        title="Custom Card Title"
+        subtitle="sub title"
+        titleTypographyProps={{ variant: 'h2', color: 'secondary', align: 'right', gutterBottom: true }}
+    >
+        Text content
+    </Card>
+</Box>
+```

@@ -13,6 +13,12 @@ npm run storybook:build
 echo 'Remove build folder to make sure the npm package only includes clean built components'
 if [ -d "./build" ]; then rm -rf ./build; fi # 
 npm run build
+npm run build:esm
+
+echo 'Copy license files'
+cp ./LICENSE ./build/
+cp ./NOTICE ./build/
+cp ./LICENSE-THIRD-PARTY ./build/
 
 echo 'Copy license files'
 cp ./LICENSE ./build/

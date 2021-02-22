@@ -20,21 +20,6 @@ import Autosuggest from '.';
 import { axe } from 'jest-axe';
 import FormField from '../FormField';
 
-jest.mock('popper.js', () => {
-    const PopperJS = jest.requireActual('popper.js');
-
-    return class {
-        static placements = PopperJS.placements;
-
-        constructor() {
-            return {
-                destroy: () => {},
-                scheduleUpdate: () => {},
-            };
-        }
-    };
-});
-
 describe('Autosuggest', () => {
     const mockEvent = jest.fn();
 
@@ -199,5 +184,28 @@ describe('Autosuggest', () => {
         const results = await axe(container);
 
         expect(results).toHaveNoViolations();
+    });
+
+    describe('icons', () => {
+        it('should render the component with default icon', () => {
+            const { container } = render(<Autosuggest options={awsServices} placeholder="input-1" />);
+            const svg = container.querySelector('.MuiSvgIcon-colorAction');
+
+            expect(svg).toBeInTheDocument();
+        });
+
+        it('should render the component with custom icon', () => {
+            const { container } = render(<Autosuggest options={awsServices} placeholder="input-1" icon="Dns" />);
+            const svg = container.querySelector('.MuiSvgIcon-colorAction');
+
+            expect(svg).toBeInTheDocument();
+        });
+
+        it('should render the component without an icon', () => {
+            const { container } = render(<Autosuggest options={awsServices} placeholder="input-1" icon={false} />);
+            const svg = container.querySelector('.MuiSvgIcon-colorAction');
+
+            expect(svg).not.toBeInTheDocument();
+        });
     });
 });

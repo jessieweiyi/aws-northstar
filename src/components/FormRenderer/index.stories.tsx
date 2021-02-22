@@ -13,11 +13,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.                                                                              *
  ******************************************************************************************************************** */
-import React from 'react';
+import React, { useCallback } from 'react';
 import { action } from '@storybook/addon-actions';
 import FormRenderer, { componentTypes, validatorTypes } from '.';
 import { awsServices } from '../Autosuggest/data/data';
 import Box from '../../layouts/Box';
+import Text from '../Text';
+import Input from '../Input';
+import FileUpload from '../FileUpload';
 
 export default {
     component: FormRenderer,
@@ -255,6 +258,17 @@ const baseSchema = {
             ],
         },
         {
+            component: componentTypes.TIME_PICKER,
+            name: 'timePicker',
+            label: 'Time picker',
+            isRequired: true,
+            validate: [
+                {
+                    type: validatorTypes.REQUIRED,
+                },
+            ],
+        },
+        {
             component: componentTypes.TREE_VIEW,
             label: 'this is a tree',
             helperText: 'this is a hint',
@@ -316,6 +330,7 @@ export const WithInitialValues = () => {
         ],
         confirm: true,
         datePicker: new Date(2020, 1, 1),
+        timePicker: '2020-01-01T00:00:00Z',
         tree: ['3', '5'],
     };
 
@@ -378,7 +393,17 @@ export const SubForms = () => {
                     {
                         component: componentTypes.TEXT_FIELD,
                         name: 'name2',
-                        label: 'Name',
+                        label: 'First name',
+                        validate: [
+                            {
+                                type: validatorTypes.REQUIRED,
+                            },
+                        ],
+                    },
+                    {
+                        component: componentTypes.TEXT_FIELD,
+                        name: 'name3',
+                        label: 'Last name',
                         validate: [
                             {
                                 type: validatorTypes.REQUIRED,
@@ -557,6 +582,7 @@ export const FieldArray = () => {
                                 name: 'type',
                                 label: 'Type',
                                 placeholder: 'Choose the type',
+                                isSearchable: true,
                                 options: [
                                     { label: 'Type 1', value: 'type1' },
                                     { label: 'Type 2', value: 'type2' },
@@ -870,6 +896,17 @@ const wizardSchema = {
                             ],
                         },
                         {
+                            component: componentTypes.TIME_PICKER,
+                            name: 'timePicker',
+                            label: 'Time picker',
+                            isRequired: true,
+                            validate: [
+                                {
+                                    type: validatorTypes.REQUIRED,
+                                },
+                            ],
+                        },
+                        {
                             component: componentTypes.TREE_VIEW,
                             label: 'this is a tree',
                             helperText: 'this is a hint',
@@ -991,6 +1028,7 @@ export const WizardWithInitialValues = () => {
         name1: 'name',
         switch: true,
         datePicker: '2020-06-11T14:00:00.000Z',
+        timePicker: '2020-06-11T14:00:00.000Z',
         tree: ['3'],
         confirm: true,
         table: [
@@ -1006,4 +1044,73 @@ export const WizardWithInitialValues = () => {
             onCancel={action('Cancel')}
         />
     );
+};
+
+const CustomComponentSimple = ({ label }) => <Text>{label}</Text>;
+
+const CustomComponentComplex = ({ input }) => <Input onChange={input.onChange} value={input.value} />;
+
+export const Custom = () => {
+    const schema = {
+        fields: [
+            {
+                component: componentTypes.CUSTOM,
+                name: 'text',
+                label: 'This is the content of custom component',
+                CustomComponent: CustomComponentSimple,
+            },
+            {
+                component: componentTypes.CUSTOM,
+                name: 'input',
+                CustomComponent: CustomComponentComplex,
+            },
+        ],
+        header: 'Data driven form with Custom Component',
+        description:
+            'Custom Component is an extention of Review Component which allows users to include custom business logic',
+    };
+
+    return (
+        <FormRenderer
+            schema={schema}
+            initialValues={{
+                input: 'initial input',
+            }}
+            onSubmit={action('Submit')}
+            onCancel={action('Cancel')}
+        />
+    );
+};
+
+const FileUploadComponent = ({ name, input, onChange }) => {
+    const handleOnChange = useCallback(
+        (files) => {
+            if (files && files.length > 0) {
+                if (onChange) {
+                    onChange(files);
+                }
+
+                input.onChange(files.map((f) => f.name));
+            }
+        },
+        [input, onChange]
+    );
+    return <FileUpload controlId={name} onChange={handleOnChange} />;
+};
+
+export const FileUploader = () => {
+    const schema = {
+        fields: [
+            {
+                component: componentTypes.CUSTOM,
+                name: 'file',
+                CustomComponent: FileUploadComponent,
+                onChange: action('File selection change'),
+            },
+        ],
+        header: 'Data driven form using FileUpload',
+        description: 'File upload logic can be implemented outside FormRenderer',
+    };
+
+    return <FormRenderer schema={schema} onSubmit={action('Submit')} onCancel={action('Cancel')} />;
 };

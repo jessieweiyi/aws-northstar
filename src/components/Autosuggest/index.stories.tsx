@@ -26,7 +26,7 @@ export default {
 };
 
 function sleep(delay = 0) {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         setTimeout(resolve, delay);
     });
 }
@@ -38,6 +38,21 @@ export const Default = () => (
             controlId="formFieldId1"
             ariaDescribedby="This is a description"
             onChange={action('onChange')}
+        />
+    </FormField>
+);
+
+export const WithValue = () => (
+    <FormField label="Form field label" controlId="formFieldId1">
+        <Autosuggest
+            options={awsServices}
+            controlId="formFieldId1"
+            placeholder="AWS services"
+            onChange={action('onChange')}
+            value={{
+                label: 'Lambda - Amazon Lambda',
+                value: 'Lambda',
+            }}
         />
     </FormField>
 );
@@ -125,7 +140,7 @@ export const AsyncWithError = () => {
                 onFocus={() => {
                     setLoadingStatus(true);
                 }}
-                onRecoveryClick={e => {
+                onRecoveryClick={(e) => {
                     setLoadingStatus(true);
                 }}
                 statusType={status}
@@ -135,3 +150,43 @@ export const AsyncWithError = () => {
         </FormField>
     );
 };
+
+export const WithoutIcon = () => (
+    <FormField label="Form field label" controlId="formFieldId1">
+        <Autosuggest
+            icon={false}
+            options={awsServices}
+            controlId="formFieldId1"
+            ariaDescribedby="This is a description"
+            onChange={action('onChange')}
+        />
+    </FormField>
+);
+
+export const WithCustomIcon = () => (
+    <FormField label="Form field label" controlId="formFieldId1">
+        <Autosuggest
+            icon={'DnsOutlined'}
+            options={awsServices}
+            controlId="formFieldId1"
+            ariaDescribedby="This is a description"
+            onChange={action('onChange')}
+        />
+    </FormField>
+);
+
+export const WithFreeSolo = () => (
+    <FormField label="Form field label" controlId="formFieldId1">
+        <Autosuggest
+            icon={'Computer'}
+            filteringType="manual"
+            freeSolo={true}
+            disableClearable={true}
+            options={awsServices}
+            controlId="formFieldId1"
+            ariaDescribedby="This is a description"
+            onChange={action('onChange')}
+            onInputChange={action('onInputChange')}
+        />
+    </FormField>
+);

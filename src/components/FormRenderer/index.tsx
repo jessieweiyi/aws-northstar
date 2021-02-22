@@ -15,21 +15,23 @@
  ******************************************************************************************************************** */
 import React, { FunctionComponent, ComponentType } from 'react';
 import FormRender, { validatorTypes } from '@data-driven-forms/react-form-renderer';
-import FormTemplate from './components/FormTemplate';
-import TextField from './components/TextField';
 import Checkbox from './components/Checkbox';
-import Radio from './components/Radio';
+import Custom from './components/Custom';
 import Datepicker from './components/Datepicker';
-import Switch from './components/Switch';
-import Textarea from './components/Textarea';
+import ExpandableSection from './components/ExpandableSection';
+import FieldArray from './components/FieldArray';
+import FormTemplate from './components/FormTemplate';
+import Radio from './components/Radio';
+import Review from './components/Review';
 import Select from './components/Select';
 import Subform from './components/Subform';
-import ExpandableSection from './components/ExpandableSection';
-import Wizard from './components/Wizard';
-import FieldArray from './components/FieldArray';
-import TreeView from './components/TreeView';
+import Switch from './components/Switch';
 import Table from './components/Table';
-import Review from './components/Review';
+import Textarea from './components/Textarea';
+import TextField from './components/TextField';
+import TimePicker from './components/TimePicker';
+import TreeView from './components/TreeView';
+import Wizard from './components/Wizard';
 import { componentTypes } from './types';
 
 const componentMapper = {
@@ -38,6 +40,7 @@ const componentMapper = {
     [componentTypes.SUB_FORM]: Subform,
     [componentTypes.RADIO]: Radio,
     [componentTypes.DATE_PICKER]: Datepicker,
+    [componentTypes.TIME_PICKER]: TimePicker,
     [componentTypes.SWITCH]: Switch,
     [componentTypes.TEXTAREA]: Textarea,
     [componentTypes.SELECT]: Select,
@@ -47,6 +50,7 @@ const componentMapper = {
     [componentTypes.EXPANDABLE_SECTION]: ExpandableSection,
     [componentTypes.TABLE]: Table,
     [componentTypes.REVIEW]: Review,
+    [componentTypes.CUSTOM]: Custom,
 };
 
 export interface FormRendererProps {

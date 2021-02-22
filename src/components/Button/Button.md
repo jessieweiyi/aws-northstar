@@ -16,6 +16,20 @@ import Container from 'aws-northstar/layouts/Container';
 
 ```jsx
 import Button from 'aws-northstar/components/Button';
+import Inline from 'aws-northstar/layouts/Inline';
+import Container from 'aws-northstar/layouts/Container';
+
+<Container headingVariant='h4' title="Buttons with different sizes">
+  <Inline>
+    <Button variant="primary" size="small">Small Button</Button>
+    <Button variant="primary" size="medium">Medium Button</Button>
+    <Button variant="primary" size="large">Large Button</Button>
+  </Inline>
+</Container>
+```
+
+```jsx
+import Button from 'aws-northstar/components/Button';
 import Container from 'aws-northstar/layouts/Container';
 import Inline from 'aws-northstar/layouts/Inline';
 
@@ -26,6 +40,9 @@ import Inline from 'aws-northstar/layouts/Inline';
     <Button variant="primary" iconAlign="right" icon="add_plus">Add</Button>
     <Button icon="external">Launch</Button>
     <Button icon="folder" iconAlign="right">Folder</Button>
+    <Button icon="Cloud" iconAlign="right">Cloud</Button>
+    <Button icon="AccountCircleTwoTone" iconAlign="right">Account</Button>
+    <Button icon="Remove" iconAlign="right">Remove</Button>
   </Inline>
 </Container>
 ```

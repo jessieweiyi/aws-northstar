@@ -17,7 +17,7 @@ import React from 'react';
 import Box from '../../layouts/Box';
 
 /** A placeholder component to be used to occupy a place for demo purpose.*/
-export default () => (
+export default (props: any) => (
     <Box
         borderColor="primary.main"
         border={2}
@@ -25,6 +25,8 @@ export default () => (
         textAlign="center"
         bgcolor="secondary.main"
         color="secondary.contrastText"
+        data-testid="placeholder"
+        {...props}
     >
         Component
     </Box>
