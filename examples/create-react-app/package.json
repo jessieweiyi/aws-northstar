@@ -13,7 +13,7 @@
     "@types/react-router": "^5.1.8",
     "@types/react-router-dom": "^5.1.5",
     "aws-northstar": "latest",
-    "plotly.js": "^1.54.7",
+    "plotly.js": "^2.18.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-pivottable": "^0.10.0",
